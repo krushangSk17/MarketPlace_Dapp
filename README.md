@@ -3,7 +3,7 @@ This is the full stack application which runs on ethereum blockchain. Full sourc
 
 Clone the repository using this command.
 	
-```> git clone https://github.com/dappuniversity/marketplace.git <name of your project>```
+	```> git clone https://github.com/dappuniversity/marketplace.git <name of your project>```
 	
 Open it in any editor:
 
@@ -13,7 +13,7 @@ Make a new smart contract in src folder:
 	In my case: Marketplace.sol
 	Initialise it with basic smart contract and compile it using
 
-> truffle compile
+	> truffle compile
 On the succession you can see abi files for marketplace in your repo.
 
 Make deploye.js file in migrations:
@@ -23,9 +23,9 @@ And migrate it later with other migrations.
 To migrate the code with truffle:
 
 Use : 
-> truffle migrate
+	> truffle migrate
 
-> truffle console
+	> truffle console
 
 In console → we can use web3.js codes and access all the functionality of smart contract
 
@@ -67,16 +67,16 @@ truffle(development)> name
 Create a backbone of the backend using solidity and test file.
 Make new js file in test (Marketplace.test.js)
 	
-const { assert } = require("chai")
-const Marketplace = artifacts.require('./Marketplace.sol')
+	const { assert } = require("chai")
+	const Marketplace = artifacts.require('./Marketplace.sol')
  
-contract('Marketplace', (accounts) => {
-    let marketplace
+	contract('Marketplace', (accounts) => {
+    	let marketplace
  
-    before(async() => {
-        marketplace = await Marketplace.deployed()
-    })
-    describe('deployement', async() => {
+    	before(async() => {
+        	marketplace = await Marketplace.deployed()
+    	})
+    	describe('deployement', async() => {
         it('deployes successfully', async() => {
             const address = await marketplace.address
             assert.notEqual(address,0x0)
@@ -88,8 +88,8 @@ contract('Marketplace', (accounts) => {
             const name = await marketplace.name()
             assert.equal(name, 'Krushang satani Marketplace')
         })
-    })
-})
+    	})
+	})
 
 (Note : Check repeatedly using command truffle test)
 
@@ -98,115 +98,116 @@ Make structure in Marketplace.sol smart contract
 And do programming according to your needs.
 
 Marketplace.sol:
-pragma solidity >=0.4.21 <0.9.0;
- 
-contract Marketplace{
-    string public name;
- 
-    uint public productCount = 0;
-    // there are no counter for mapping length
-    mapping(uint => Product) public products;
- 
-    struct Product {
-        uint id;
-        string name;
-        uint price;
-        address owner;
-        bool purchased;
-    }
- 
-    event productCreated(
-        uint id,
-        string name,
-        uint price,
-        address owner,
-        bool purchased
-    );
- 
-    constructor() public {
-        name = "Krushang satani Marketplace";
-    }
- 
-    function createProduct(string memory _name, uint _price) public{
-        // make sure of parameters are correct
-        require(bytes(_name).length > 0);
- 
-        require(_price > 0);
-        //increment product counter
-        productCount ++;
-        //create a product
-        products[productCount] = Product(productCount, _name, _price, msg.sender, false);
-        //trigger an event
-        emit productCreated(productCount, _name, _price, msg.sender, false);
-    }
-}
+	
+	pragma solidity >=0.4.21 <0.9.0;
+
+	contract Marketplace{
+	    string public name;
+
+	    uint public productCount = 0;
+	    // there are no counter for mapping length
+	    mapping(uint => Product) public products;
+
+	    struct Product {
+		uint id;
+		string name;
+		uint price;
+		address owner;
+		bool purchased;
+	    }
+
+	    event productCreated(
+		uint id,
+		string name,
+		uint price,
+		address owner,
+		bool purchased
+	    );
+
+	    constructor() public {
+		name = "Krushang satani Marketplace";
+	    }
+
+	    function createProduct(string memory _name, uint _price) public{
+		// make sure of parameters are correct
+		require(bytes(_name).length > 0);
+
+		require(_price > 0);
+		//increment product counter
+		productCount ++;
+		//create a product
+		products[productCount] = Product(productCount, _name, _price, msg.sender, false);
+		//trigger an event
+		emit productCreated(productCount, _name, _price, msg.sender, false);
+	    }
+	}
  
  
 
 
 Marketplace.test.js:
 	
-const { assert } = require("chai")
-require("chai")
-    .use(require('chai-as-promised'))
-    .should()
- 
-const Marketplace = artifacts.require('./Marketplace.sol')
- 
-contract('Marketplace', ([deployer, seller, buyer]) => {
-    let marketplace
- 
-    before(async() => {
-        marketplace = await Marketplace.deployed()
- 
-    })
- 
-    describe('deployement', async() => {
-        it('deployes successfully', async() => {
-            const address = await marketplace.address
-            assert.notEqual(address,0x0)
-            assert.notEqual(address,'')
-            assert.notEqual(address,null)
-            assert.notEqual(address,undefined)
- 
-        })
-        it('has a good name', async() => {
-            const name = await marketplace.name()
-            assert.equal(name, 'Krushang satani Marketplace')
-        })
-    })
- 
-    describe('products', async() => {
-        let result, productCount
- 
-        before(async() => {
-            result = await marketplace.createProduct('iphoneX', web3.utils.toWei('0.11','Ether'),{from : seller})
-            // in wei 1000000000000000
- 
-            productCount = await marketplace.productCount()
-   
-        })
- 
-        it('creates a product', async() => {
- 
-            //success
-            assert.equal(productCount,1)
-            const event = result.logs[0].args
-            assert.equal(event.id.toNumber(), productCount.toNumber(), 'id is correct')
-            assert.equal(event.name,'iphoneX',' is correct')
-            assert.equal(event.price, web3.utils.toWei('0.11','Ether') ,' is correct')
-            assert.equal(event.owner, seller,' is correct')
-            assert.equal(event.purchased, false,' is correct')
-       
-            //failure: product must have a name
-            await marketplace.createProduct('', web3.utils.toWei('0.11','Ether'),{from : seller}).should.be.rejected;
-            //failure: product must have a price
-            await marketplace.createProduct('iphoneX', 0,{from : seller}).should.be.rejected;
- 
-        })
-    })
- 
-})
+	const { assert } = require("chai")
+	require("chai")
+	    .use(require('chai-as-promised'))
+	    .should()
+
+	const Marketplace = artifacts.require('./Marketplace.sol')
+
+	contract('Marketplace', ([deployer, seller, buyer]) => {
+	    let marketplace
+
+	    before(async() => {
+		marketplace = await Marketplace.deployed()
+
+	    })
+
+	    describe('deployement', async() => {
+		it('deployes successfully', async() => {
+		    const address = await marketplace.address
+		    assert.notEqual(address,0x0)
+		    assert.notEqual(address,'')
+		    assert.notEqual(address,null)
+		    assert.notEqual(address,undefined)
+
+		})
+		it('has a good name', async() => {
+		    const name = await marketplace.name()
+		    assert.equal(name, 'Krushang satani Marketplace')
+		})
+	    })
+
+	    describe('products', async() => {
+		let result, productCount
+
+		before(async() => {
+		    result = await marketplace.createProduct('iphoneX', web3.utils.toWei('0.11','Ether'),{from : seller})
+		    // in wei 1000000000000000
+
+		    productCount = await marketplace.productCount()
+
+		})
+
+		it('creates a product', async() => {
+
+		    //success
+		    assert.equal(productCount,1)
+		    const event = result.logs[0].args
+		    assert.equal(event.id.toNumber(), productCount.toNumber(), 'id is correct')
+		    assert.equal(event.name,'iphoneX',' is correct')
+		    assert.equal(event.price, web3.utils.toWei('0.11','Ether') ,' is correct')
+		    assert.equal(event.owner, seller,' is correct')
+		    assert.equal(event.purchased, false,' is correct')
+
+		    //failure: product must have a name
+		    await marketplace.createProduct('', web3.utils.toWei('0.11','Ether'),{from : seller}).should.be.rejected;
+		    //failure: product must have a price
+		    await marketplace.createProduct('iphoneX', 0,{from : seller}).should.be.rejected;
+
+		})
+	    })
+
+	})
 
 
 (Note : Check repeatedly using command truffle test)
@@ -257,60 +258,60 @@ Add this in marketplace.sol:
 
 Add this in test.js file of marketplace:
 
-it('lists products' , async() => {
-            const product = await  marketplace.products(productCount)
-            assert.equal(product.id.toNumber(), productCount.toNumber(), 'id is correct')
-            assert.equal(product.name,'iphoneX',' is correct')
-            assert.equal(product.price, web3.utils.toWei('0.11','Ether') ,' is correct')
-            assert.equal(product.owner, seller,' is correct')
-            assert.equal(product.purchased, false,' is correct')
-        })
- 
-        it('sells products' , async() => {
-            //track the seller balance before purchase
-            let oldsellerbalance
-            oldsellerbalance = await web3.eth.getBalance(seller)
-            oldsellerbalance = new web3.utils.BN(oldsellerbalance)
-           
-            //success buyers makes purchase
-            result = await marketplace.purchaseProduct(productCount , {from: buyer, value: web3.utils.toWei('0.11','Ether')})
-           
-            //check logs
-            const event = result.logs[0].args
-            assert.equal(event.id.toNumber(), productCount.toNumber(), 'id is correct')
-            assert.equal(event.name,'iphoneX',' is correct')
-            assert.equal(event.price, web3.utils.toWei('0.11','Ether') ,' is correct')
-            assert.equal(event.owner, buyer,' is correct updated')
-            assert.equal(event.purchased, true,' is correct')
-           
-            //check seller received funds
-            let newsellerbalance
-            newsellerbalance = await web3.eth.getBalance(seller)
-            newsellerbalance = new web3.utils.BN(newsellerbalance)
-           
-            let price
-            price = web3.utils.toWei('0.11','Ether')
-            price = new web3.utils.BN(price)
-           
-            const expectedbal = oldsellerbalance.add(price)
-            //because it is BN diff declaration
- 
-            assert.equal(newsellerbalance.toString(),expectedbal.toString(),'balance is varified')
- 
-            //failure : does not exit (invalid id)
-            await marketplace.purchaseProduct(99 , {from: buyer, value: web3.utils.toWei('0.11','Ether')}).should.be.rejected
-           
-            //failure : buy with enough ether
-            await marketplace.purchaseProduct(productCount , {from: buyer, value: web3.utils.toWei('0.01','Ether')}).should.be.rejected
-           
-            //failure : buy already bought item
-            await marketplace.purchaseProduct(productCount , {from: deployer, value: web3.utils.toWei('0.11','Ether')}).should.be.rejected
-           
-            //failure : buy your own item item
-            await marketplace.purchaseProduct(productCount , {from: buyer, value: web3.utils.toWei('0.11','Ether')}).should.be.rejected
-           
- 
-        })
+	it('lists products' , async() => {
+		    const product = await  marketplace.products(productCount)
+		    assert.equal(product.id.toNumber(), productCount.toNumber(), 'id is correct')
+		    assert.equal(product.name,'iphoneX',' is correct')
+		    assert.equal(product.price, web3.utils.toWei('0.11','Ether') ,' is correct')
+		    assert.equal(product.owner, seller,' is correct')
+		    assert.equal(product.purchased, false,' is correct')
+		})
+
+		it('sells products' , async() => {
+		    //track the seller balance before purchase
+		    let oldsellerbalance
+		    oldsellerbalance = await web3.eth.getBalance(seller)
+		    oldsellerbalance = new web3.utils.BN(oldsellerbalance)
+
+		    //success buyers makes purchase
+		    result = await marketplace.purchaseProduct(productCount , {from: buyer, value: web3.utils.toWei('0.11','Ether')})
+
+		    //check logs
+		    const event = result.logs[0].args
+		    assert.equal(event.id.toNumber(), productCount.toNumber(), 'id is correct')
+		    assert.equal(event.name,'iphoneX',' is correct')
+		    assert.equal(event.price, web3.utils.toWei('0.11','Ether') ,' is correct')
+		    assert.equal(event.owner, buyer,' is correct updated')
+		    assert.equal(event.purchased, true,' is correct')
+
+		    //check seller received funds
+		    let newsellerbalance
+		    newsellerbalance = await web3.eth.getBalance(seller)
+		    newsellerbalance = new web3.utils.BN(newsellerbalance)
+
+		    let price
+		    price = web3.utils.toWei('0.11','Ether')
+		    price = new web3.utils.BN(price)
+
+		    const expectedbal = oldsellerbalance.add(price)
+		    //because it is BN diff declaration
+
+		    assert.equal(newsellerbalance.toString(),expectedbal.toString(),'balance is varified')
+
+		    //failure : does not exit (invalid id)
+		    await marketplace.purchaseProduct(99 , {from: buyer, value: web3.utils.toWei('0.11','Ether')}).should.be.rejected
+
+		    //failure : buy with enough ether
+		    await marketplace.purchaseProduct(productCount , {from: buyer, value: web3.utils.toWei('0.01','Ether')}).should.be.rejected
+
+		    //failure : buy already bought item
+		    await marketplace.purchaseProduct(productCount , {from: deployer, value: web3.utils.toWei('0.11','Ether')}).should.be.rejected
+
+		    //failure : buy your own item item
+		    await marketplace.purchaseProduct(productCount , {from: buyer, value: web3.utils.toWei('0.11','Ether')}).should.be.rejected
+
+
+		})
 
 It is the final backend part for the marketplace Dapp.
 Check repeatedly using : truffle test.
@@ -326,7 +327,7 @@ Marketplace.address
 Note: till this complete all the process done above and deployment of smart contract on blockchain is necessary.
 
 
-Now moving to the frontend and connection part:
+9.	Now moving to the frontend and connection part:
 First do changes according to the app.js file and make some functionality to connect with smart contracts.
 Refer app.js file and Navbar.js file to make changes in your boilerplate file of app.js
 In app.js file: to reduce code length we have added an additional extended module of navbar.js file.
@@ -336,7 +337,7 @@ Link for the part 9 reference.
 In this one can link metamask with local blockchain running on ganache.
 Keep in mind: set seller account and buyer account in metamast with different private key and link metamask to the ganache network using network id and localhost.
 		
-Move on to the product listing and selling.
+10.	Move on to the product listing and selling.
 Refer to the link below and code accordingly
 Firstly make the functions in app.js. like
 createProduct() and purchaseProduct()
@@ -346,7 +347,8 @@ Use them into the main.js file to handle the click and submit event.
 For reference:
 https://github.com/krushangSk17/Ref_files_Marketplace_First_Dapp/tree/main/components_part-10
 
-Most exciting part for Dapp deployment is to deploy it in a public test network.
+
+11. 	Most exciting part for Dapp deployment is to deploy it in a public test network.
 
 We will use the kuvan test network in metamask.
 Explore https://kovan.etherscan.io/
