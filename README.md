@@ -1,9 +1,32 @@
 # MarketPlace_Dapp
-This is the full stack application which runs on ethereum blockchain. Full source code is available and how to proceed for the programming is also available in readme file.
+This is the full stack application which runs on ethereum blockchain. Full source code is available and how to proceed for the programming is also available below in this readme file.
+
+# To Run This Source Code:
+	1. clone this directory.
+	2. check all dependencies and check using npm install.
+	3. connect ganache whith config.js file.
+	4. migrate contract and deploye it.
+	5. then check the test.js file and run it using. truffle test in console.
+	6. choose accounts for seller, deployer, and buyer from ganache and load it on the metamask wallet.
+	7. run this on browser and make sure you have started ganache in backend.
+	8. put items using sellers account and buy them using buyers account.
+	9. you can track all the transaction records in ganache transactions.
+	
+	
+# Follow the process to develop your general Dapp using Solidity, javascript, bootstrap, etc...
+
+### pre-requisites:
+##### ganache:
+	https://trufflesuite.com/ganache/index.html
+##### truffle:
+	https://trufflesuite.com/docs/truffle/getting-started/installation.html
+##### node compatible version:
+	https://nodejs.org/en/
+
 
 ## 1.	Clone the repository using this command.
 	git clone https://github.com/dappuniversity/marketplace.git <name of your project>	
-
+	'I have used dappuniversity tutorial for reference and this all material are refered from dapp university tutorial.'
 Open it in any editor:
 See all the files and check the correct version of the solidity compiler.
 
