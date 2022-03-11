@@ -8,7 +8,8 @@ This is the full stack application which runs on ethereum blockchain. Full sourc
 	4. migrate contract and deploye it.
 	5. then check the test.js file and run it using. truffle test in console.
 	6. choose accounts for seller, deployer, and buyer from ganache and load it on the metamask wallet.
-	7. run this on browser and make sure you have started ganache in backend.
+	7. run this on browser using 'npm run start'
+		and make sure you have started ganache in backend.
 	8. put items using sellers account and buy them using buyers account.
 	9. you can track all the transaction records in ganache transactions.
 	
