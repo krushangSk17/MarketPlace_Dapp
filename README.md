@@ -26,7 +26,7 @@ This is the full stack application which runs on ethereum blockchain. Full sourc
 
 
 ## 1.	Clone the repository using this command.
-	git clone https://github.com/dappuniversity/marketplace.git <name of your project>	
+	git clone https://github.com/dappuniversity/starter_kit <name of your project>	
 	'I have used dappuniversity tutorial for reference and this all material are refered from dapp university tutorial.'
 Open it in any editor:
 See all the files and check the correct version of the solidity compiler.
